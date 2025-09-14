@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookmark Links</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f8fafc;
+            color: #334155;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: #64748b;
+        }
+
+        .bookmarks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .bookmark-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s ease;
+        }
+
+        .bookmark-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .bookmark-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .bookmark-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        .bookmark-info h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.25rem;
+        }
+
+        .bookmark-category {
+            display: inline-block;
+            background: #e0f2fe;
+            color: #0369a1;
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .bookmark-description {
+            color: #64748b;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .bookmark-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            text-align: center;
+            width: 100%;
+        }
+
+        .bookmark-link:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .category-section {
+            margin-bottom: 3rem;
+        }
+
+        .category-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .category-description {
+            margin-bottom: 1.5rem;
+        }
+
+        /* Category-specific colors */
+        .category-maths .bookmark-icon {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+
+        .category-literacy .bookmark-icon {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+
+        .category-history .bookmark-icon {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+        }
+
+        .category-science .bookmark-icon {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+
+        .category-pshe .bookmark-icon {
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+        }
+
+        .category-geography .bookmark-icon {
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+        }
+
+        .category-data .bookmark-icon {
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .bookmarks-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .bookmark-card {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+        </div>
+
+        <div id="bookmarks-container">
+            <!-- Bookmarks will be generated here by JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        const links = {
+            homework: {
+                name: 'Homework',
+                emoji: '🏠',
+                description: 'These are the most important links for homework',
+                links: [
+                    {
+                        name: 'My Maths',
+                        desc: 'Maths homework',
+                        url: 'https://app.mymaths.co.uk/myportal/library/11?login_modal=true'
+                    },
+                    {
+                        name: 'Edshed',
+                        desc: 'Spelling homework',
+                        url: 'https://www.edshed.com/en-gb/login/school'
+                    },
+                    {
+                        name: 'Google Classroom',
+                        desc: 'Google Classroom',
+                        url: 'https://classroom.google.com/u/2/h'
+                    },
+                    {
+                        name: 'Purple Mash',
+                        desc: 'Looks like its going to be used for sharing work (i.e. uploading pictures)',
+                        url: 'https://www.purplemash.com/#docs/My%20Work/'
+                    }
+                ]
+            },
+
+            maths: {
+                name: 'Maths',
+                emoji: '🔢',
+                description: 'These are also important',
+                links: [
+                    {
+                        name: 'TT Rockstars',
+                        desc: 'Multiplication',
+                        url: 'https://play.ttrockstars.com/setup/rockname'
+                    },
+                    {
+                        name: 'Numbots',
+                        desc: 'Multiplication',
+                        url: 'https://play.numbots.com/#/account/school-login/18295'
+                    },
+                    {
+                        name: 'Primary Topics - Calculating',
+                        desc: 'Maths calculating exercises',
+                        url: 'http://www.primarytopics.co.uk/maths/calculating/calculating.htm'
+                    }
+                ]
+            },
+            literacy: {
+                name: 'Literacy',
+                emoji: '📚',
+                description: 'Everything below here is copied from the school website and links to free stuff online',
+                links: [
+                    {
+                        name: 'Traditional Tales',
+                        desc: 'iBoard traditional tales activities',
+                        url: 'http://www.iboard.co.uk/curriculum.htm#newliteracy-subtopicNarrativetexts3'
+                    },
+                    {
+                        name: 'Orgre\'s Birthday',
+                        desc: 'iBoard narrative texts',
+                        url: 'http://www.iboard.co.uk/curriculum.htm#newliteracy-subtopicNarrativetexts2'
+                    },
+                    {
+                        name: 'Steven Butler Books',
+                        desc: 'Author website and resources',
+                        url: 'http://www.stevenbutlerbooks.com/'
+                    }
+                ]
+            },
+            history: {
+                name: 'History',
+                emoji: '🏛️',
+                description: '',
+                links: [
+                    {
+                        name: 'BBC Celts',
+                        desc: 'Learn about Celtic culture and history',
+                        url: 'http://www.bbc.co.uk/wales/celts/'
+                    },
+                    {
+                        name: 'Woodlands - Romans',
+                        desc: 'Roman history and facts',
+                        url: 'http://primaryhomeworkhelp.co.uk/Romans.html'
+                    },
+                    {
+                        name: 'BBC Romans',
+                        desc: 'BBC primary history about Romans',
+                        url: 'http://www.bbc.co.uk/schools/primaryhistory/romans/'
+                    },
+                    {
+                        name: 'Romans Cyberhunt',
+                        desc: 'Interactive Roman history hunt',
+                        url: 'http://icteachers.co.uk/children/cyberhunts/romans/romehunt.htm'
+                    }
+                ]
+            },
+            science: {
+                name: 'Science',
+                emoji: '🔬',
+                description: '',
+                links: [
+                    {
+                        name: 'Grow your own grub',
+                        desc: 'Plant growing and gardening',
+                        url: 'http://www.growinggrub.co.uk/'
+                    },
+                    {
+                        name: 'Teeth and Eating',
+                        desc: 'BBC science about teeth and eating',
+                        url: 'http://www.bbc.co.uk/schools/ks2bitesize/science/living_things/teeth_eating/read1.shtml'
+                    },
+                    {
+                        name: 'Woodlands - Magnets',
+                        desc: 'Learn about magnets and springs',
+                        url: 'http://www.woodlands-junior.kent.sch.uk/revision/science/physical.htm'
+                    },
+                    {
+                        name: 'Morse Code and Semaphore',
+                        desc: 'Sound communication games',
+                        url: 'http://www.connected-earth.com/Learningresources/Funandgames/Games/Morsecodeandsemaphore/index.htm'
+                    },
+                    {
+                        name: 'Weather and People',
+                        desc: 'BBC weather and climate',
+                        url: 'http://www.bbc.co.uk/schools/whatisweather/weatherandpeople/clothing/intro.shtml'
+                    }
+                ]
+            },
+            pshe: {
+                name: 'PSHE',
+                emoji: '💚',
+                description: '',
+                links: [
+                    {
+                        name: 'Healthy Eating',
+                        desc: 'BBC Northern Ireland healthy eating resources',
+                        url: 'http://www.bbc.co.uk/northernireland/schools/4_11/uptoyou/healthy/nutrientfacts1.shtml'
+                    },
+                    {
+                        name: 'Up to You',
+                        desc: 'PSHE and citizenship resources',
+                        url: 'http://www.bbc.co.uk/northernireland/schools/4_11/uptoyou/'
+                    },
+                    {
+                        name: 'Eat Smart',
+                        desc: 'Children First health and nutrition',
+                        url: 'http://www.childrenfirst.nhs.uk/kids/health/eat_smart/'
+                    },
+                    {
+                        name: 'Privacy Playground',
+                        desc: 'Internet safety and digital literacy',
+                        url: 'http://mediasmarts.ca/digital-media-literacy/educational-games'
+                    }
+                ]
+            },
+            geography: {
+                name: 'Geography',
+                emoji: '🌍',
+                description: '',
+                links: [
+                    {
+                        name: 'World Factbook',
+                        desc: 'Yahoo Kids world facts and information',
+                        url: 'http://kids.yahoo.com/reference/world-factbook'
+                    },
+                    {
+                        name: 'National Geographic Kids',
+                        desc: 'Explore the world with National Geographic',
+                        url: 'http://kids.nationalgeographic.co.uk/'
+                    },
+                    {
+                        name: 'Fact Monster',
+                        desc: 'Educational facts and information',
+                        url: 'http://www.factmonster.com/'
+                    }
+                ]
+            },
+            data: {
+                name: 'Data & Graphs',
+                emoji: '📊',
+                description: '',
+                links: [
+                    {
+                        name: 'NCES Kids Graph Creator',
+                        desc: 'Create bar and pie charts',
+                        url: 'http://nces.ed.gov/nceskids/graphing/classic/bar_pie_data.asp?ChartType=bar'
+                    }
+                ]
+            }
+        };
+
+        // Function to get initials from name
+        function getInitials(name) {
+            return name.split(' ').map(word => word[0]).join('').toUpperCase().slice(0, 2);
+        }
+
+        // Function to render all bookmarks
+        function renderBookmarks() {
+            const container = document.getElementById('bookmarks-container');
+            let html = '';
+
+            Object.keys(links).forEach(categoryKey => {
+                const category = links[categoryKey];
+                
+                html += `
+                    <div class="category-section">
+                        <h2 class="category-title">${category.emoji} ${category.name}</h2>
+                        <p class="category-description">${category.description}</p>
+                        <div class="bookmarks-grid">
+                `;
+
+                category.links.forEach(link => {
+                    html += `
+                        <div class="bookmark-card category-${categoryKey}">
+                            <div class="bookmark-header">
+                                <div class="bookmark-icon">${getInitials(link.name)}</div>
+                                <div class="bookmark-info">
+                                    <h3>${link.name}</h3>
+                                    <span class="bookmark-category">${category.name}</span>
+                                </div>
+                            </div>
+                            <div class="bookmark-description">${link.desc}</div>
+                            <a href="${link.url}" target="_blank" class="bookmark-link">Visit ${link.name}</a>
+                        </div>
+                    `;
+                });
+
+                html += `
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // Render bookmarks when page loads
+        document.addEventListener('DOMContentLoaded', renderBookmarks);
+    </script>
+</body>
+</html>
